@@ -22,7 +22,7 @@ import {
   Sparkles,
   TrendingUp,
 } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
+import { type ReactNode, useEffect, useMemo, useState } from 'react';
 import { Switch } from '@/components/ui/switch';
 
 type View =
@@ -828,6 +828,32 @@ function Workbench({ onReport }: { onReport: () => void }) {
   );
 }
 
+function DemoFrame({
+  title,
+  hint,
+  children,
+}: {
+  title: string;
+  hint: string;
+  children: ReactNode;
+}) {
+  return (
+    <div className="demo-frame">
+      <div className="demo-frame__bar">
+        <span className="demo-frame__dots" aria-hidden="true">
+          <i />
+          <i />
+          <i />
+        </span>
+        <b>{title}</b>
+        <span>{hint}</span>
+        <em>INTERACTIVE DEMO</em>
+      </div>
+      <div className="demo-frame__body">{children}</div>
+    </div>
+  );
+}
+
 function MiniBriefDemo() {
   const [edition, setEdition] = useState<'cn' | 'global'>('cn');
   const [scheduled, setScheduled] = useState(true);
@@ -985,40 +1011,102 @@ function MiniResearchDemo() {
 function MiniTrackingDemo() {
   const [stock, setStock] = useState(0);
   const [calendar, setCalendar] = useState(false);
+  const [activeEvent, setActiveEvent] = useState(3);
+  const [feedFilter, setFeedFilter] = useState('全部');
+  const [mineOnly, setMineOnly] = useState(true);
+  const [calendarTab, setCalendarTab] = useState('我的日历');
+  const selectedStock = watchlist[stock];
+  const eventPoints = [
+    { x: 118, y: 142, mark: '纪', type: '纪要', title: '专家交流：数据中心电源需求拆解' },
+    { x: 228, y: 128, mark: '报', type: '研报', title: 'AIDC 配电环节核心标的深度跟踪' },
+    { x: 338, y: 86, mark: '调', type: '调研', title: '投资者关系活动记录表' },
+    { x: 474, y: 65, mark: '点', type: '点评', title: 'Q2 毛利率阶段性承压，数据中心业务高增' },
+    { x: 594, y: 106, mark: '公', type: '公告', title: '2026 年中报：800VDC 进入交付验证' },
+  ];
+  const feed = [
+    ['21小时前', '点评', `${selectedStock[0]} Q2毛利率阶段性承压，数中心业务驱动收入高增`, '招商证券'],
+    ['08—28', '纪要', `${selectedStock[1]} 2026年08月28日投资者关系活动记录表`, '高管出席'],
+    ['08—28', '研报', `${selectedStock[0]} 2026年中报点评：数据中心电源加速推进`, '东吴证券'],
+    ['08—27', '点评', `【${selectedStock[0]}】26H1点评`, '中信建投'],
+  ];
   return (
     <div className="alpha-demo mini-tracking">
       <div className="alpha-demo-bar">
-        <b>{calendar ? '我的日历' : watchlist[stock][0]}</b>
-        <span>{calendar ? '08—28 周五 · 7 场路演' : watchlist[stock][1]}</span>
+        <b>{calendar ? '研究日历' : selectedStock[0]}</b>
+        <span>
+          {calendar
+            ? '08—28 周五 · 7 场路演'
+            : `${selectedStock[1]}　${selectedStock[2]}`}
+        </span>
         <button onClick={() => setCalendar(!calendar)}>
           {calendar ? '返回个股全景' : '打开研究日历'}
         </button>
       </div>
       {calendar ? (
-        <div className="alpha-calendar">
-          <aside>
-            <b>全部日程　7</b>
-            {['路演　7', '调研　0', '策略会　0', '行业论坛　0'].map((x) => (
-              <span key={x}>{x}</span>
-            ))}
-          </aside>
-          <div>
-            {[
-              '08:00 新城控股：合理估值水平在哪里',
-              '09:00 科士达 2026 年半年度业绩交流会',
-              '10:00 威腾电气中报业绩交流会',
-            ].map((x, i) => (
-              <article style={{ gridColumn: i * 2 + 1 }} key={x}>
-                <small>{x.slice(0, 5)}</small>
-                <b>{x.slice(6)}</b>
-                <span>已订阅 · 关联材料</span>
-              </article>
-            ))}
+        <div className="alpha-calendar-shell">
+          <div className="alpha-calendar-toolbar">
+            <label>
+              <Search size={13} />
+              <input placeholder="搜索活动" aria-label="搜索研究活动" />
+            </label>
+            <button>回今天</button>
+            <b>‹　08—28 周五　›</b>
+            <label className="alpha-calendar-switch">
+              <Switch checked={mineOnly} onCheckedChange={setMineOnly} />
+              订阅自选
+            </label>
+          </div>
+          <div className="alpha-calendar-tabs">
+            {['全市场活动', '我的日历', 'A股业绩日历', '港股业绩日历', '美股业绩日历'].map(
+              (tab) => (
+                <button
+                  className={calendarTab === tab ? 'active' : ''}
+                  onClick={() => setCalendarTab(tab)}
+                  key={tab}
+                >
+                  {tab}
+                </button>
+              ),
+            )}
+          </div>
+          <div className="alpha-calendar">
+            <aside>
+              <b>全部日程　{mineOnly ? 7 : 12}</b>
+              {['路演　7', '调研　0', '策略会　0', '行业论坛　0'].map((x) => (
+                <span key={x}>{x}</span>
+              ))}
+            </aside>
+            <div>
+              <div className="alpha-time-axis">
+                {['08:00', '08:30', '09:00', '09:30', '10:00', '10:30'].map(
+                  (x) => <span key={x}>{x}</span>,
+                )}
+              </div>
+              {[
+                ['08:00', '兴业地产', '新城控股：合理估值水平在哪里'],
+                ['09:00', '长江电新', '科士达2026年半年报业绩交流会'],
+                ['10:00', '长江电新', '国电南瑞2026年中报业绩交流会'],
+              ].map((x, i) => (
+                <article style={{ gridColumn: i * 2 + 1 }} key={x[2]}>
+                  <small>{x[0]}　{x[1]}</small>
+                  <b>{x[2]}</b>
+                  <span>🎧 已订阅 · 关联材料</span>
+                </article>
+              ))}
+            </div>
           </div>
         </div>
       ) : (
         <div className="alpha-track-grid">
           <aside>
+            <label className="alpha-watch-search">
+              <Search size={12} />
+              <input aria-label="搜索股票" placeholder="搜索股票名称/代码" />
+            </label>
+            <div className="alpha-watch-head">
+              <b>全部自选</b>
+              <span>最新价　涨幅</span>
+            </div>
             {watchlist.slice(0, 7).map((s, i) => (
               <button
                 className={stock === i ? 'selected' : ''}
@@ -1043,51 +1131,92 @@ function MiniTrackingDemo() {
               <span>QA</span>
               <span>纪要</span>
               <span>研报</span>
+              <span>资讯</span>
             </nav>
+            <div className="alpha-chart-tools">
+              <span>分时　五日　<b>日K</b>　周K　月K　| 1Y</span>
+              <span>研究事件　→ 归母净利润</span>
+            </div>
             <svg
-              viewBox="0 0 680 230"
+              viewBox="0 0 680 250"
               role="img"
-              aria-label="股价与研究事件示意图"
+              aria-label="股价K线与研究事件叠加图"
             >
               <g stroke="#e8ebf0">
                 {[35, 75, 115, 155, 195].map((y) => (
                   <line key={y} x1="15" x2="665" y1={y} y2={y} />
                 ))}
               </g>
-              <path
-                d="M15 175 C70 148 95 187 145 144 S240 151 290 119 S355 60 405 82 S485 41 525 94 S605 73 665 108"
-                fill="none"
-                stroke="#ff8b57"
-                strokeWidth="3"
-              />
-              {[
-                [145, 144],
-                [290, 119],
-                [405, 82],
-                [525, 94],
-                [625, 90],
-              ].map(([x, y], i) => (
-                <g key={x}>
-                  <circle cx={x} cy={y} r="10" fill="white" stroke="#367bf5" />
+              {Array.from({ length: 30 }).map((_, i) => {
+                const x = 24 + i * 20.5;
+                const base =
+                  170 - Math.sin(i * 0.7) * 22 - i * 2.1 +
+                  (i > 20 ? (i - 20) * 5 : 0);
+                const rising = i % 3 !== 0;
+                return (
+                  <g key={i}>
+                    <line x1={x} x2={x} y1={base - 13} y2={base + 15} stroke={rising ? '#ef6464' : '#32ad83'} />
+                    <rect x={x - 3} y={base - 5} width="6" height="12" fill={rising ? '#ef6464' : '#32ad83'} />
+                  </g>
+                );
+              })}
+              <path d="M24 163 L118 70 L228 177 L338 118 L474 92 L594 80" fill="none" stroke="#ffad66" strokeWidth="2" />
+              {eventPoints.map((event, i) => (
+                <g
+                  key={event.x}
+                  role="button"
+                  tabIndex={0}
+                  className={activeEvent === i ? 'active-event' : ''}
+                  onClick={() => setActiveEvent(i)}
+                >
+                  <circle cx={event.x} cy={event.y} r="11" fill="white" stroke="#367bf5" />
                   <text
-                    x={x}
-                    y={y + 3}
+                    x={event.x}
+                    y={event.y + 3}
                     textAnchor="middle"
                     fontSize="8"
                     fill="#367bf5"
                   >
-                    {['纪', '报', '调', '点', '纪'][i]}
+                    {event.mark}
                   </text>
                 </g>
               ))}
+              <g opacity=".55">
+                {Array.from({ length: 38 }).map((_, i) => (
+                  <rect key={i} x={20 + i * 16.5} y={221 - (i % 6) * 4} width="8" height={12 + (i % 6) * 4} fill={i % 3 ? '#efaaa7' : '#9dd9c3'} />
+                ))}
+              </g>
             </svg>
+            <div className="alpha-chart-years">
+              <span>2025—10</span><span>2026—01</span><span>2026—04</span><span>2026—08</span>
+            </div>
           </div>
           <section>
-            <b>研究事件</b>
-            <span>点评 · 今天</span>
-            <h4>{watchlist[stock][0]} 26H1 点评</h4>
-            <p>最新公告与卖方观点已归入时间线。</p>
+            <b>研究事件 <small>2026—08—27</small></b>
+            <span>{eventPoints[activeEvent].type} · 已归档</span>
+            <h4>{eventPoints[activeEvent].title}</h4>
+            <p>点击图中事件标记，在行情与当时的研究材料之间切换。</p>
           </section>
+          <div className="alpha-feed">
+            <div className="alpha-feed-tabs">
+              <b>最新跟踪</b>
+              {['全部', '外资观点', '精选点评', '纪要', '研报'].map((x) => (
+                <button className={feedFilter === x ? 'active' : ''} onClick={() => setFeedFilter(x)} key={x}>{x}</button>
+              ))}
+            </div>
+            {feed
+              .filter((x) => feedFilter === '全部' || x[1] === feedFilter.replace('精选', ''))
+              .map((x, i) => (
+                <button className="alpha-feed-row" onClick={() => setActiveEvent(Math.min(i, eventPoints.length - 1))} key={x[2]}>
+                  <time>{x[0]}</time><em>{x[1]}</em><b>{x[2]}</b><small>{x[3]}</small>
+                </button>
+              ))}
+          </div>
+          <div className="alpha-activities">
+            <header><b>研究活动</b><span>未来14天 · 2场</span></header>
+            <article><small>明天 08:00　兴证电新</small><b>2026 研究巡礼：{selectedStock[0]} 业务展望</b></article>
+            <article><small>09—10　湖润新质</small><b>秋季上市公司闭门会</b></article>
+          </div>
         </div>
       )}
     </div>
@@ -1231,7 +1360,9 @@ function Report({ onWorkbench }: { onWorkbench: () => void }) {
             <b>交互 Demo 01</b>
             <span>切换国内/全球版本，暂停或开启定时任务</span>
           </figcaption>
-          <MiniBriefDemo />
+          <DemoFrame title="Alpha 派 · 蓝宝书" hint="版本切换 / 定时任务">
+            <MiniBriefDemo />
+          </DemoFrame>
         </figure>
       </section>
       <section className="report-section" id="research">
@@ -1249,7 +1380,9 @@ function Report({ onWorkbench }: { onWorkbench: () => void }) {
             <b>交互 Demo 02</b>
             <span>点击不同来源，查看问答与证据页联动</span>
           </figcaption>
-          <MiniResearchDemo />
+          <DemoFrame title="Alpha 派 · PaiWork" hint="对话 / 证据联动">
+            <MiniResearchDemo />
+          </DemoFrame>
         </figure>
         <p className="report-note">
           <strong>边界：</strong>
@@ -1268,7 +1401,9 @@ function Report({ onWorkbench }: { onWorkbench: () => void }) {
             <b>交互 Demo 03</b>
             <span>切换公司，并在个股全景与研究日历之间切换</span>
           </figcaption>
-          <MiniTrackingDemo />
+          <DemoFrame title="Alpha 派 · 跟踪看板" hint="事件叠加 / 跟踪流 / 研究日历">
+            <MiniTrackingDemo />
+          </DemoFrame>
         </figure>
       </section>
       <section className="report-section" id="skills">
@@ -1283,7 +1418,9 @@ function Report({ onWorkbench }: { onWorkbench: () => void }) {
             <b>交互 Demo 04</b>
             <span>启用或停用技能，观察“我的工作流”变化</span>
           </figcaption>
-          <MiniSkillsDemo />
+          <DemoFrame title="Alpha 派 · Skills" hint="技能广场 / 启用管理">
+            <MiniSkillsDemo />
+          </DemoFrame>
         </figure>
         <p className="report-note">
           <strong>结论：</strong>Alpha

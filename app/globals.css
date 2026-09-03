@@ -1558,6 +1558,56 @@ button {
   font: 10px/1.5 var(--mono);
   letter-spacing: 0.08em;
 }
+.demo-frame {
+  overflow: hidden;
+  border: 1px solid #aeb8c7;
+  border-top: 4px solid #377df7;
+  border-radius: 10px;
+  background: #edf2f8;
+  box-shadow: 0 18px 42px rgba(35, 54, 83, 0.13);
+}
+.demo-frame__bar {
+  display: grid;
+  grid-template-columns: auto auto 1fr auto;
+  gap: 10px;
+  align-items: center;
+  min-height: 42px;
+  padding: 8px 12px;
+  border-bottom: 1px solid #cbd3de;
+  color: #697487;
+  font: 11px/1.3 var(--sans);
+}
+.demo-frame__bar b {
+  color: #1f2a3a;
+  font-size: 12px;
+}
+.demo-frame__bar em {
+  padding-left: 10px;
+  border-left: 1px solid #bcc6d3;
+  color: #377df7;
+  font: 700 9px var(--mono);
+  letter-spacing: 0.08em;
+}
+.demo-frame__dots {
+  display: flex;
+  gap: 5px;
+}
+.demo-frame__dots i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #9ba7b8;
+}
+.demo-frame__dots i:first-child { background: #ff6f68; }
+.demo-frame__dots i:nth-child(2) { background: #ffbf4a; }
+.demo-frame__dots i:last-child { background: #35c759; }
+.demo-frame__body {
+  margin: 0 9px 9px;
+  overflow: hidden;
+  border: 1px solid #d7dde6;
+  border-radius: 7px;
+  background: white;
+}
 .alpha-demo {
   --alpha-blue: #377df7;
   --alpha-blue-soft: #eaf3ff;
@@ -1565,8 +1615,8 @@ button {
   --alpha-muted: #9299a3;
   --alpha-line: #e5e8ed;
   overflow: hidden;
-  border: 1px solid #dfe3e9;
-  border-radius: 8px;
+  border: 0;
+  border-radius: 6px;
   background: #fff;
   color: var(--alpha-text);
   font: 12px/1.45 var(--sans);
@@ -1877,13 +1927,40 @@ button {
 .alpha-track-grid {
   display: grid;
   grid-template-columns: 175px minmax(460px, 1fr) 220px;
-  min-height: 390px;
+  grid-template-rows: 330px minmax(190px, auto);
+  min-height: 520px;
 }
 .alpha-track-grid > aside {
+  grid-row: 1 / 3;
   padding: 8px;
   background: #f6f7f9;
   border-right: 1px solid var(--alpha-line);
 }
+.alpha-watch-search {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  margin-bottom: 8px;
+  padding: 7px 8px;
+  border: 1px solid var(--alpha-line);
+  border-radius: 4px;
+  background: white;
+}
+.alpha-watch-search input {
+  min-width: 0;
+  width: 100%;
+  border: 0;
+  outline: 0;
+  font-size: 10px;
+}
+.alpha-watch-head {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 4px 8px;
+  color: #747d89;
+  font-size: 9px;
+}
+.alpha-watch-head b { color: #394352; }
 .alpha-track-grid > aside button {
   display: flex;
   justify-content: space-between;
@@ -1926,10 +2003,34 @@ button {
 .alpha-chart nav span {
   color: #6e7580;
 }
+.alpha-chart-tools,
+.alpha-chart-years {
+  display: flex;
+  justify-content: space-between;
+  color: #8b939e;
+  font-size: 9px;
+}
+.alpha-chart-tools {
+  padding: 9px 0 0;
+}
+.alpha-chart-tools b {
+  color: var(--alpha-blue);
+}
+.alpha-chart-years {
+  padding: 0 25px 8px;
+}
 .alpha-chart svg {
   width: 100%;
   height: auto;
-  margin-top: 20px;
+  margin-top: 2px;
+}
+.alpha-chart svg g[role='button'] {
+  cursor: pointer;
+  outline: none;
+}
+.alpha-chart svg g.active-event circle {
+  fill: #e8f2ff;
+  stroke-width: 3;
 }
 .alpha-track-grid > section {
   padding: 13px;
@@ -1940,6 +2041,12 @@ button {
   padding-bottom: 10px;
   border-bottom: 1px solid var(--alpha-line);
   font-size: 14px;
+}
+.alpha-track-grid > section > b small {
+  float: right;
+  color: var(--alpha-muted);
+  font-size: 9px;
+  font-weight: 400;
 }
 .alpha-track-grid > section > span {
   display: inline-block;
@@ -1954,6 +2061,148 @@ button {
 }
 .alpha-track-grid > section p {
   color: var(--alpha-muted);
+}
+.alpha-feed {
+  min-width: 0;
+  padding: 0 13px 10px;
+  border-top: 1px solid var(--alpha-line);
+}
+.alpha-feed-tabs {
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  padding: 10px 0 8px;
+}
+.alpha-feed-tabs b {
+  margin-right: 5px;
+  font-size: 14px;
+}
+.alpha-feed-tabs button {
+  padding: 3px 6px;
+  border: 0;
+  border-radius: 3px;
+  background: #f2f4f7;
+  color: #7a828d;
+  font-size: 9px;
+}
+.alpha-feed-tabs button.active {
+  background: var(--alpha-blue-soft);
+  color: var(--alpha-blue);
+}
+.alpha-feed-row {
+  display: grid;
+  grid-template-columns: 58px 32px minmax(0, 1fr) auto;
+  gap: 7px;
+  width: 100%;
+  padding: 6px 0;
+  border: 0;
+  border-top: 1px solid #f0f1f3;
+  background: white;
+  text-align: left;
+}
+.alpha-feed-row time,
+.alpha-feed-row small {
+  color: #99a0a9;
+  font-size: 9px;
+}
+.alpha-feed-row em {
+  color: #377df7;
+  font-size: 9px;
+  font-style: normal;
+}
+.alpha-feed-row b {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 10px;
+}
+.alpha-activities {
+  padding: 10px 12px;
+  border-top: 1px solid var(--alpha-line);
+  border-left: 1px solid var(--alpha-line);
+}
+.alpha-activities header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 7px;
+}
+.alpha-activities header b { font-size: 14px; }
+.alpha-activities header span { color: #9299a3; font-size: 9px; }
+.alpha-activities article {
+  padding: 7px 0;
+  border-top: 1px solid #eef0f3;
+}
+.alpha-activities article small,
+.alpha-activities article b {
+  display: block;
+}
+.alpha-activities article small {
+  margin-bottom: 4px;
+  color: #8b939e;
+  font-size: 9px;
+}
+.alpha-activities article b {
+  font-size: 10px;
+  line-height: 1.45;
+}
+.alpha-calendar-shell {
+  min-height: 350px;
+}
+.alpha-calendar-toolbar {
+  display: grid;
+  grid-template-columns: 180px auto 1fr auto;
+  gap: 12px;
+  align-items: center;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--alpha-line);
+}
+.alpha-calendar-toolbar > label:first-child {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  padding: 6px 8px;
+  border-radius: 4px;
+  background: #f3f5f8;
+}
+.alpha-calendar-toolbar input {
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+}
+.alpha-calendar-toolbar > button {
+  padding: 5px 9px;
+  border: 1px solid var(--alpha-line);
+  border-radius: 4px;
+  background: white;
+  color: #69717d;
+}
+.alpha-calendar-toolbar > b {
+  color: #2f72e8;
+  text-align: center;
+}
+.alpha-calendar-switch {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.alpha-calendar-tabs {
+  display: flex;
+  gap: 22px;
+  padding: 10px 15px 0;
+  border-bottom: 1px solid var(--alpha-line);
+}
+.alpha-calendar-tabs button {
+  padding: 0 0 8px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: white;
+  color: #747d89;
+}
+.alpha-calendar-tabs button.active {
+  border-bottom-color: var(--alpha-blue);
+  color: var(--alpha-blue);
+  font-weight: 700;
 }
 .alpha-calendar {
   display: grid;
@@ -1977,10 +2226,11 @@ button {
   padding: 6px 8px;
 }
 .alpha-calendar > div {
+  position: relative;
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   gap: 1px;
-  padding: 45px 12px;
+  padding: 42px 12px 14px;
   background: repeating-linear-gradient(
     90deg,
     transparent 0,
@@ -1988,6 +2238,17 @@ button {
     #e5e8ed calc(16.666% - 1px),
     #e5e8ed 16.666%
   );
+}
+.alpha-time-axis {
+  position: absolute;
+  inset: 0 0 auto;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  height: 30px;
+  padding: 7px 10px;
+  background: #e7f1ff;
+  color: #465263;
+  font-size: 9px;
 }
 .alpha-calendar article {
   min-height: 100px;

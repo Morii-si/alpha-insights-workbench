@@ -1137,6 +1137,19 @@ function MiniTrackingDemo() {
               <span>分时　五日　<b>日K</b>　周K　月K　| 1Y</span>
               <span>研究事件　→ 归母净利润</span>
             </div>
+            <div className="alpha-event-legend" aria-label="研究事件图例">
+              <small>点击标记查看当时材料</small>
+              {eventPoints.map((event, i) => (
+                <button
+                  className={activeEvent === i ? 'active' : ''}
+                  onClick={() => setActiveEvent(i)}
+                  key={event.type}
+                >
+                  <i>{event.mark}</i>
+                  {event.type}
+                </button>
+              ))}
+            </div>
             <svg
               viewBox="0 0 680 250"
               role="img"
@@ -1169,6 +1182,7 @@ function MiniTrackingDemo() {
                   className={activeEvent === i ? 'active-event' : ''}
                   onClick={() => setActiveEvent(i)}
                 >
+                  <title>{`${event.type}：${event.title}`}</title>
                   <circle cx={event.x} cy={event.y} r="11" fill="white" stroke="#367bf5" />
                   <text
                     x={event.x}

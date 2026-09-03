@@ -2016,6 +2016,44 @@ button {
 .alpha-chart-tools b {
   color: var(--alpha-blue);
 }
+.alpha-event-legend {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  padding: 6px 0 1px;
+}
+.alpha-event-legend small {
+  margin-right: auto;
+  color: #8b939e;
+  font-size: 9px;
+}
+.alpha-event-legend button {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+  padding: 3px 5px;
+  border: 1px solid #dce5f2;
+  border-radius: 3px;
+  background: white;
+  color: #687382;
+  font-size: 9px;
+}
+.alpha-event-legend button.active {
+  border-color: #8cb7ff;
+  background: var(--alpha-blue-soft);
+  color: #2468d4;
+}
+.alpha-event-legend i {
+  display: grid;
+  place-items: center;
+  width: 15px;
+  height: 15px;
+  border: 1px solid #8cb7ff;
+  border-radius: 50%;
+  color: #377df7;
+  font-size: 8px;
+  font-style: normal;
+}
 .alpha-chart-years {
   padding: 0 25px 8px;
 }

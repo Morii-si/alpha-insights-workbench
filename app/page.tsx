@@ -1295,19 +1295,18 @@ function MiniSkillsDemo() {
 
 function ResearchWorkflowDiagram() {
   const nodes = [
-    { n: '01', x: 48, y: 80, actor: 'HUMAN', title: 'Idea 产生', detail: '卖方 · 公众号 · 博客', owner: '人提出方向' },
-    { n: '02', x: 224, y: 80, actor: 'AI', title: '信息收集与初判', detail: '广泛扫描 · 去重压缩', owner: 'AI 扩大视野' },
-    { n: '03', x: 400, y: 80, actor: 'AI', title: '深度研究', detail: '多源证据 · 私人材料', owner: 'AI 组织证据' },
-    { n: '04', x: 576, y: 80, actor: 'HUMAN', title: '投资决策', detail: '权衡分歧 · 承担结果', owner: '人作出判断', focal: true },
-    { n: '05', x: 752, y: 80, actor: 'AI', title: '持续跟踪', detail: '公告 · 点评 · 研究事件', owner: 'AI 降低遗漏' },
-    { n: '06', x: 928, y: 80, actor: 'HUMAN', title: '迭代认知', detail: '校正框架 · 更新决策', owner: '人更新认知' },
+    { n: '①', x: 48, y: 80, actor: 'HUMAN', title: 'Idea 产生', detail: '卖方 · 公众号 · 博客', owner: '人提出方向' },
+    { n: '②', x: 224, y: 80, actor: 'AI', title: '信息收集与初判', detail: '广泛扫描 · 去重压缩', owner: 'AI 扩大视野' },
+    { n: '③', x: 400, y: 80, actor: 'AI', title: '深度研究', detail: '多源证据 · 私人材料', owner: 'AI 组织证据' },
+    { n: '④', x: 576, y: 80, actor: 'HUMAN', title: '投资决策', detail: '权衡分歧 · 承担结果', owner: '人作出判断', focal: true },
+    { n: '⑤', x: 752, y: 80, actor: 'AI', title: '持续跟踪', detail: '公告 · 点评 · 研究事件', owner: 'AI 降低遗漏' },
+    { n: '⑥', x: 928, y: 80, actor: 'HUMAN', title: '迭代认知', detail: '校正框架 · 更新决策', owner: '人更新认知' },
   ];
   return (
     <div className="workflow-figure">
       <header>
         <p>RESEARCH WORKFLOW</p>
         <h3>从信息爆炸，到持续更新决策</h3>
-        <span>AI 负责压缩复杂度，人负责关键判断</span>
       </header>
       <svg
         className="workflow-diagram"
@@ -1345,7 +1344,7 @@ function ResearchWorkflowDiagram() {
             <rect x={node.x} y={node.y} width="144" height="104" fill={node.focal ? '#ead3cc' : node.actor === 'AI' ? '#cbdad1' : '#f4efe3'} stroke={node.focal ? '#b84f45' : '#28564c'} strokeWidth={node.focal ? '2' : '1.5'} />
             <rect x={node.x + 12} y={node.y + 12} width="40" height="16" fill={node.focal ? '#b84f45' : '#1b433a'} />
             <text x={node.x + 32} y={node.y + 24} textAnchor="middle" fill="#f4efe3" fontSize="8" fontWeight="700" fontFamily="var(--mono)" letterSpacing="1">{node.actor}</text>
-            <text x={node.x + 132} y={node.y + 24} textAnchor="end" fill={node.focal ? '#b84f45' : '#496a62'} fontSize="8" fontWeight="700" fontFamily="var(--mono)">{node.n}</text>
+            <text x={node.x + 132} y={node.y + 27} textAnchor="end" fill={node.focal ? '#b84f45' : '#28564c'} fontSize="16" fontWeight="700" fontFamily="var(--sans)">{node.n}</text>
             <text x={node.x + 12} y={node.y + 52} fill="#173c34" fontSize="16" fontWeight="700" fontFamily="var(--serif)">{node.title}</text>
             <text x={node.x + 12} y={node.y + 72} fill="#496a62" fontSize="8" fontFamily="var(--sans)">{node.detail}</text>
             <text x={node.x + 12} y={node.y + 92} fill={node.focal ? '#a33f37' : '#28564c'} fontSize="8" fontWeight="700" fontFamily="var(--sans)">{node.owner}</text>

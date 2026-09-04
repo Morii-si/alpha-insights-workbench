@@ -1488,8 +1488,8 @@ button {
 .workflow-figure > header {
   position: relative;
   display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 3px 24px;
+  grid-template-columns: 1fr;
+  gap: 3px;
   padding: 18px 22px 16px 148px;
   border-bottom: 1px solid #9aaba5;
 }
@@ -1501,13 +1501,14 @@ button {
   background: #173c34;
 }
 .workflow-figure > header:after {
-  content: '';
+  content: '🧐';
   position: absolute;
-  left: 28px;
+  left: 42px;
   top: 50%;
-  width: 68px;
-  height: 4px;
-  background: var(--paper);
+  transform: translateY(-50%);
+  font-family: system-ui, sans-serif;
+  font-size: 38px;
+  line-height: 1;
 }
 .workflow-figure > header p {
   grid-column: 1;
@@ -1527,17 +1528,6 @@ button {
   font-size: clamp(22px, 3vw, 34px);
   font-weight: 700;
   line-height: 1.2;
-}
-.workflow-figure > header span {
-  grid-column: 2;
-  grid-row: 1 / 3;
-  align-self: center;
-  max-width: 260px;
-  color: #5f756e;
-  font-family: var(--sans);
-  font-size: 13px;
-  font-weight: 500;
-  line-height: 1.55;
 }
 .workflow-diagram {
   display: block;

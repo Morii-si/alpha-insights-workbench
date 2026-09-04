@@ -1293,67 +1293,90 @@ function MiniSkillsDemo() {
   );
 }
 
-function Report({ onWorkbench }: { onWorkbench: () => void }) {
+function ResearchWorkflowDiagram() {
+  const nodes = [
+    { n: '01', x: 48, y: 80, actor: 'HUMAN', title: 'Idea 产生', detail: '卖方 · 公众号 · 博客', owner: '人提出方向' },
+    { n: '02', x: 224, y: 80, actor: 'AI', title: '信息收集与初判', detail: '广泛扫描 · 去重压缩', owner: 'AI 扩大视野' },
+    { n: '03', x: 400, y: 80, actor: 'AI', title: '深度研究', detail: '多源证据 · 私人材料', owner: 'AI 组织证据' },
+    { n: '04', x: 576, y: 80, actor: 'HUMAN', title: '投资决策', detail: '权衡分歧 · 承担结果', owner: '人作出判断', focal: true },
+    { n: '05', x: 752, y: 80, actor: 'AI', title: '持续跟踪', detail: '公告 · 点评 · 研究事件', owner: 'AI 降低遗漏' },
+    { n: '06', x: 928, y: 80, actor: 'HUMAN', title: '迭代认知', detail: '校正框架 · 更新决策', owner: '人更新认知' },
+  ];
+  return (
+    <div className="workflow-figure">
+      <header>
+        <p>RESEARCH WORKFLOW</p>
+        <h3>从信息爆炸，到持续更新决策</h3>
+        <span>AI 负责压缩复杂度，人负责关键判断</span>
+      </header>
+      <svg
+        className="workflow-diagram"
+        viewBox="0 0 1120 288"
+        role="img"
+        aria-labelledby="research-workflow-title research-workflow-desc"
+      >
+        <title id="research-workflow-title">投研工作流</title>
+        <desc id="research-workflow-desc">六个阶段展示从 Idea 产生、信息收集、深度研究、投资决策、持续跟踪到迭代认知的人机分工与反馈闭环。</desc>
+        <defs>
+          <marker id="workflow-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#496a62" />
+          </marker>
+          <marker id="workflow-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#b84f45" />
+          </marker>
+          <marker id="workflow-arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#1b433a" />
+          </marker>
+        </defs>
+        <rect width="1120" height="288" fill="#f4efe3" />
+        <rect x="24" y="48" width="1072" height="168" fill="#dce6df" opacity=".45" />
+
+        <line x1="192" x2="224" y1="132" y2="132" stroke="#496a62" strokeWidth="2" markerEnd="url(#workflow-arrow)" />
+        <line x1="368" x2="400" y1="132" y2="132" stroke="#496a62" strokeWidth="2" markerEnd="url(#workflow-arrow)" />
+        <line x1="544" x2="576" y1="132" y2="132" stroke="#b84f45" strokeWidth="2" markerEnd="url(#workflow-arrow-accent)" />
+        <line x1="720" x2="752" y1="132" y2="132" stroke="#b84f45" strokeWidth="2" markerEnd="url(#workflow-arrow-accent)" />
+        <line x1="896" x2="928" y1="132" y2="132" stroke="#496a62" strokeWidth="2" markerEnd="url(#workflow-arrow)" />
+        <path d="M1072 132 H1080 Q1088 132 1088 140 V248 Q1088 256 1080 256 H128 Q120 256 120 248 V184" fill="none" stroke="#1b433a" strokeWidth="1.5" strokeDasharray="5 4" markerEnd="url(#workflow-arrow-link)" />
+        <rect x="512" y="232" width="160" height="16" fill="#f4efe3" />
+        <text x="592" y="244" textAnchor="middle" fill="#1b433a" fontSize="8" fontFamily="var(--mono)" letterSpacing="1">认知进入下一轮</text>
+
+        {nodes.map((node) => (
+          <g key={node.n}>
+            <rect x={node.x} y={node.y} width="144" height="104" fill={node.focal ? '#ead3cc' : node.actor === 'AI' ? '#cbdad1' : '#f4efe3'} stroke={node.focal ? '#b84f45' : '#28564c'} strokeWidth={node.focal ? '2' : '1.5'} />
+            <rect x={node.x + 12} y={node.y + 12} width="40" height="16" fill={node.focal ? '#b84f45' : '#1b433a'} />
+            <text x={node.x + 32} y={node.y + 24} textAnchor="middle" fill="#f4efe3" fontSize="8" fontWeight="700" fontFamily="var(--mono)" letterSpacing="1">{node.actor}</text>
+            <text x={node.x + 132} y={node.y + 24} textAnchor="end" fill={node.focal ? '#b84f45' : '#496a62'} fontSize="8" fontWeight="700" fontFamily="var(--mono)">{node.n}</text>
+            <text x={node.x + 12} y={node.y + 52} fill="#173c34" fontSize="16" fontWeight="700" fontFamily="var(--serif)">{node.title}</text>
+            <text x={node.x + 12} y={node.y + 72} fill="#496a62" fontSize="8" fontFamily="var(--sans)">{node.detail}</text>
+            <text x={node.x + 12} y={node.y + 92} fill={node.focal ? '#a33f37' : '#28564c'} fontSize="8" fontWeight="700" fontFamily="var(--sans)">{node.owner}</text>
+          </g>
+        ))}
+      </svg>
+    </div>
+  );
+}
+
+function Report() {
   return (
     <main className="report-page">
       <div className="report-top-rule" />
       <header className="report-header">
         <div>
           <p className="report-eyebrow">ALPHA PAI · WORKFLOW INSIGHT</p>
-          <h1>
-            Alpha派如何赋能
-            <br />
-            我的工作流
-          </h1>
-          <p className="report-subtitle">
-            从信息爆炸到可追溯判断：一名投研用户的工作流拆解
-          </p>
+          <h1>Alpha派 x 投研场景用户调研</h1>
         </div>
-        <aside>
-          <div>
-            <span>文档类型</span>
-            <b>产品 Insight</b>
-          </div>
-          <div>
-            <span>交付形式</span>
-            <b>交互式报告</b>
-          </div>
-          <div>
-            <span>版本</span>
-            <b>2026.09</b>
-          </div>
-        </aside>
       </header>
       <nav className="report-nav">
         <a href="#workflow">01 工作流</a>
         <a href="#discovery">02 信息发现</a>
         <a href="#research">03 深度研究</a>
         <a href="#tracking">04 持续跟踪</a>
-        <a href="#skills">05 Skills</a>
-        <button className="mode-switch" onClick={onWorkbench}>
-          打开完整工作台 Demo
-        </button>
       </nav>
       <section className="report-section" id="workflow">
         <p className="report-kicker">01 · MY WORKFLOW</p>
-        <h2>我的经典工作流：</h2>
+        <h2>投研工作流</h2>
         <div className="report-heading-rule" />
-        <div className="report-workflow">
-          {[
-            'Idea产生（可能来自卖方、公众号、博客，whatever）→',
-            '信息收集并形成初步判断（值不值得继续深入研究）→',
-            '深度研究 →',
-            '决策（最关键的一步、也是最难被ai替代的一步）→',
-            '持续跟踪→',
-            '迭代认知并更新决策（人的工作）。',
-          ].map((x, i) => (
-            <article key={x}>
-              <span>0{i + 1}</span>
-              <b>{x}</b>
-              {i < 5 && <ArrowRight size={17} />}
-            </article>
-          ))}
-        </div>
+        <ResearchWorkflowDiagram />
         <p className="report-body">
           投研是典型的高频、长文本、重推理场景。基金经理、研究员每天在处理海量的非结构化数据，海量的交流，最大的痛点就是信息爆炸，但同时，这些数据对AI来说都是非常好的语料和上下文。
         </p>
@@ -1372,7 +1395,6 @@ function Report({ onWorkbench }: { onWorkbench: () => void }) {
         <figure>
           <figcaption>
             <b>交互 Demo 01</b>
-            <span>切换国内/全球版本，暂停或开启定时任务</span>
           </figcaption>
           <DemoFrame title="Alpha 派 · 蓝宝书" hint="版本切换 / 定时任务">
             <MiniBriefDemo />
@@ -1392,7 +1414,6 @@ function Report({ onWorkbench }: { onWorkbench: () => void }) {
         <figure>
           <figcaption>
             <b>交互 Demo 02</b>
-            <span>点击不同来源，查看问答与证据页联动</span>
           </figcaption>
           <DemoFrame title="Alpha 派 · PaiWork" hint="对话 / 证据联动">
             <MiniResearchDemo />
@@ -1413,27 +1434,9 @@ function Report({ onWorkbench }: { onWorkbench: () => void }) {
         <figure>
           <figcaption>
             <b>交互 Demo 03</b>
-            <span>切换公司，并在个股全景与研究日历之间切换</span>
           </figcaption>
           <DemoFrame title="Alpha 派 · 跟踪看板" hint="事件叠加 / 跟踪流 / 研究日历">
             <MiniTrackingDemo />
-          </DemoFrame>
-        </figure>
-      </section>
-      <section className="report-section" id="skills">
-        <p className="report-kicker">05 · EXTENSIBLE WORKFLOW</p>
-        <h2>其他日常：Skills</h2>
-        <div className="report-heading-rule" />
-        <p className="report-body">
-          其他日常：通过平台的方式集成了很多skills可以封装进自己的工作流
-        </p>
-        <figure>
-          <figcaption>
-            <b>交互 Demo 04</b>
-            <span>启用或停用技能，观察“我的工作流”变化</span>
-          </figcaption>
-          <DemoFrame title="Alpha 派 · Skills" hint="技能广场 / 启用管理">
-            <MiniSkillsDemo />
           </DemoFrame>
         </figure>
         <p className="report-note">
@@ -1443,17 +1446,11 @@ function Report({ onWorkbench }: { onWorkbench: () => void }) {
       </section>
       <footer className="report-footer">
         <span>ALPHA PAI INSIGHT · INTERACTIVE REPORT</span>
-        <b>所有界面与数据均为演示复刻，不构成投资建议。</b>
       </footer>
     </main>
   );
 }
 
 export default function Home() {
-  const [mode, setMode] = useState<'report' | 'workbench'>('report');
-  return mode === 'report' ? (
-    <Report onWorkbench={() => setMode('workbench')} />
-  ) : (
-    <Workbench onReport={() => setMode('report')} />
-  );
+  return <Report />;
 }

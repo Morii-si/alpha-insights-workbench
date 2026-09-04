@@ -1344,7 +1344,7 @@ function ResearchWorkflowDiagram() {
             <rect x={node.x} y={node.y} width="144" height="104" fill={node.focal ? '#ead3cc' : node.actor === 'AI' ? '#cbdad1' : '#f4efe3'} stroke={node.focal ? '#b84f45' : '#28564c'} strokeWidth={node.focal ? '2' : '1.5'} />
             <rect x={node.x + 12} y={node.y + 12} width="40" height="16" fill={node.focal ? '#b84f45' : '#1b433a'} />
             <text x={node.x + 32} y={node.y + 24} textAnchor="middle" fill="#f4efe3" fontSize="8" fontWeight="700" fontFamily="var(--mono)" letterSpacing="1">{node.actor}</text>
-            <text x={node.x + 132} y={node.y + 27} textAnchor="end" fill={node.focal ? '#b84f45' : '#28564c'} fontSize="16" fontWeight="700" fontFamily="var(--sans)">{node.n}</text>
+            <text x={node.x + 132} y={node.y + 31} textAnchor="end" fill={node.focal ? '#b84f45' : '#28564c'} fontSize="24" fontWeight="700" fontFamily="var(--sans)">{node.n}</text>
             <text x={node.x + 12} y={node.y + 52} fill="#173c34" fontSize="16" fontWeight="700" fontFamily="var(--serif)">{node.title}</text>
             <text x={node.x + 12} y={node.y + 72} fill="#496a62" fontSize="8" fontFamily="var(--sans)">{node.detail}</text>
             <text x={node.x + 12} y={node.y + 92} fill={node.focal ? '#a33f37' : '#28564c'} fontSize="8" fontWeight="700" fontFamily="var(--sans)">{node.owner}</text>
